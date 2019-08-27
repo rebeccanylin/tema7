@@ -6,37 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="">
+
+    <style>
+        .firkant {
+            height: 100px;
+            width: 100px;
+            line-height: 100px;
+            text-align: center;
+            background: green;
+        }
+
+        .cirkel {
+            height: 100px;
+            width: 100px;
+            line-height: 100px;
+            border-radius: 50%;
+            text-align: center;
+            background: green;
+            background-color: red;
+
+        }
+    </style>
 </head>
 
 <body>
-    <div id="content">
-        <div><a href="https://mit.kea.dk">kea</a></div>
-        <div><a href="https://github.com/rebeccanylin/tema7.git">git</a></div>
-        <div> <img src="frog.png" alt="frø"> </div>
+    <div class="firkant">
 
     </div>
 
+    <div class="cirkel">
+
+
+    </div>
     <script>
-        const content = document.querySelector("#content");
-        const første = document.querySelector("#content div a");
-        const anden = document.querySelector("#content div:nth-child(2)");
-        const sidst = document.querySelector("#content div+div+div");
-
-        //        første.textContent = "link til keas hjemmeside";
-        //        første.innerHTML = "<h1>link til keas hjemmeside</h1>";
-        content.innerHTML += "<h1>link til keas hjemmeside</h1>";
-        console.log(content);
-        console.log(første);
-        console.log(anden);
-        console.log(sidst);
-        //        document.querySelector("#content");
-        //        //        document.querySelector("#content div+div");
-        //        //
-        //        //        console.log(document.querySelector("#content div+div"));
-        //
-        //        console.log(document.querySelector("img"));
-
+        document.querySelector(".firkant").textContent = "grøn";
+        document.querySelector(".cirkel").textContent = "rød";
     </script>
-</body>
-
-</html>
+</body></html>
