@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+
+    <style>
+        .dyrene {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(1fr);
+            max-width: 950px;
+            margin: 0 auto;
+
+        }
+
+        img {
+            width: 80%;
+        }
+
+        article {
+            border: 1px solid black;
+        }
+
+        @media screen and (min-width:600px) {
+            .dyrene {
+                grid-template-columns: repeat(1fr);
+            }
+
+        }
+
+        @media screen and (min-width:1000px) {
+            .dyrene {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+    <template>
+        <article>
+            <h2></h2>
+            <img src="" alt="">
+            <p class="type">Type: </p>
+            <p class="levested">Levested: </p>
+        </article>
+    </template>
+
+
+    <section class="dyrene"></section>
+
+
+    <script>
+        const dyr = [{
+                "fornavn": "gris,",
+                "type": "pattedyr fra",
+                "levested": "gården",
+                "billede": "http://mabe-kea.dk/E19/pics/pig.png"
+            },
+
+            {
+                "fornavn": "frø,",
+                "type": "klam fra",
+                "levested": "søen",
+                "billede": "http://mabe-kea.dk/E19/pics/frog.png"
+
+            },
+            {
+                "fornavn": "ræv,",
+                "type": "pattedyr fra",
+                "levested": "skoven",
+                "billede": "http://mabe-kea.dk/E19/pics/fox.png"
+            }, {
+                "fornavn": "sild,",
+                "type": "fisk fra",
+                "levested": "vandet",
+                "billede": "http://mabe-kea.dk/E19/pics/sild.jpg"
+            },
+            {
+                "fornavn": "krokodille,",
+                "type": "farlig fra",
+                "levested": "sumpen",
+                "billede": "http://mabe-kea.dk/E19/pics/kroko.jpg"
+            }
+
+        ]
+
+
+        const dyreneKloner = document.querySelector(".dyrene");
+        const temp = document.querySelector("template");
+
+
+
+
+
+        dyr.forEach(dyre => {
+            const klon = temp.cloneNode(true).content;
+            klon.querySelector("h2").textContent = dyre.fornavn;
+            klon.querySelector(".type").textContent += dyre.type;
+            klon.querySelector(".levested").textContent += dyre.levested;
+            klon.querySelector("img").src = dyre.billede;
+            dyreneKloner.appendChild(klon);
+
+
+            //            document.querySelector("article").innerHTML += `<p>${dyre.fornavn} ${dyre.type} ${dyre.levested}</p>`;
+
+
+
+        })
+
+
+        //        console.log(dyr);
+
+    </script>
+</body>
+
+</html>
