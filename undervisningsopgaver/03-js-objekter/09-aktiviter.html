@@ -18,23 +18,24 @@
         }
 
         img {
-            width: 80%;
+            width: 17%;
         }
 
         article {
             border: 1px solid black;
+            padding: 5px;
         }
 
         @media screen and (min-width:600px) {
             .dyrene {
-                grid-template-columns: repeat(1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
 
         }
 
         @media screen and (min-width:1000px) {
             .dyrene {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(5, 1fr);
             }
 
         }
@@ -108,14 +109,7 @@
             dyreneKloner.appendChild(klon);
 
 
-            //            document.querySelector("article").innerHTML += `<p>${dyre.fornavn} ${dyre.type} ${dyre.levested}</p>`;
-
-
-
         })
-
-
-        //        console.log(dyr);
 
     </script>
 </body>

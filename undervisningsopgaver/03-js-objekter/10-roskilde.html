@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        img {
+            margin: 10px;
+            max-width: 30%;
+            min-width: 200px;
+
+            background-position: center;
+
+        }
+
+        .data-container {
+            text-align: left;
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(1, 1fr);
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+
+
+        h1 {
+            padding-left: 10px;
+            font-size: 26px;
+        }
+
+        p {
+            padding-left: 10px;
+        }
+
+        article {
+
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        article:nth-child(even) {
+
+            background: #ffffff;
+        }
+
+        article:nth-child(odd) {
+
+            background: #eae8e8;
+        }
+
+        .overhead {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        .dato {
+            color: black;
+            font-style: italic;
+        }
+
+
+
+        @media screen and (min-width:600px) {
+            .data-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+        }
+
+        template,
+        section {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="data-container"></section>
+    <template>
+
+        <article>
+            <div class="overhead">
+                <img src="" alt="">
+                <h1></h1>
+
+            </div>
+            <p class="dato"></p>
+            <p></p>
+        </article>
+
+
+    </template>
+
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", visSide);
+
+
+
+        let side = [{
+                "billede": "https://dit-holbaek.dk/wp-content/uploads/2019/08/Cykelulykker.jpg",
+                "overskrift": "Ældre er overrepræsenteret i cyklistulykker",
+                "dato": "23. august 2019",
+                "broedtekst": "Når man har passeret pensionsalderen, er der rig mulighed for at leve et aktivt liv, hvilket mange seniorer heldigvis gør. Men desværre viser ulykkestallene, at alt for mange personer over 65 år også kommer til skade, når de bevæger sig rundt på cykel"
+
+
+            },
+            {
+                "billede": "https://dit-roskilde.dk/wp-content/uploads/2019/08/abw-regnvejr-paraply-200x150.jpg",
+                "overskrift": "Oprydning efter skybrud kan være farligt",
+                "dato": "23. august 2019",
+                "broedtekst": "Når vandet fosser ind i boligen eller virksomheden som følge af et skybrud, har de fleste mennesker kun én tanke i hovedet: at redde, hvad der reddes kan, og få det indtrængende vand stoppet i en pokkers fart."
+
+
+            },
+            {
+                "billede": "https://dit-roskilde.dk/wp-content/uploads/2019/08/Roskilde-Byl%C3%B8b-b%C3%B8rn-august-2019-abw-7-200x150.jpg",
+                "overskrift": "Roskilde Byløb 2019",
+                "dato": "22. august 2019",
+                "broedtekst": "Børneløbet blev skudt i gang kl. 18.00 og der var fart på de små ben! Dit Roskilde var et hurtigt smut forbi."
+
+
+            },
+            {
+                "billede": "https://dit-roskilde.dk/wp-content/uploads/2019/08/kronprinsen2010_Territorium-200x150.jpg",
+                "overskrift": "H.K.H. Kronprinsen åbner Naturens Dag 2019",
+                "dato": "22. august 2019",
+                "broedtekst": "5. klasse fra Bramsnæsvigskolen får sved på panden, når de sammen med Hans Kongelige Højhed Kronprinsen skyder Naturens Dag i gang i det betagende landskab i Ejby Ådal ved Roskilde."
+
+
+            },
+            {
+                "billede": "https://dit-roskilde.dk/wp-content/uploads/2019/08/Lego_robot-200x150.jpg",
+                "overskrift": "Skandinavisk Lego finale kommer til Roskilde",
+                "dato": "22. august 2019",
+                "broedtekst": "Skoleelever fra Danmark, Norge og Sverige dyster hvert år i november i den skandinaviske finale i First Lego League – verdens største teknologi- og projektturnering for 10-16 årige. Og i år kommer det til at foregå i Roskilde Kongrescenter Bauhaus Arena."
+
+
+            },
+            {
+                "billede": "https://dit-roskilde.dk/wp-content/uploads/2019/08/2019-08-20_Foto_4-ige_Nellie_Alzheimerforenningen_web-200x150.jpg",
+                "overskrift": "Alzheimerforeningen mangler indsamlere i Roskilde",
+                "dato": "22. august 2019",
+                "broedtekst": "Under overskriften ‘Husk mig’ går hundredvis af mennesker på gaden lørdag d. 21. september til Alzheimerforeningens landsindsamling for at samle ind til fordel for de omkring 89.000 mennesker, der lever med en alvorlig demenssygdom.",
+
+            }
+
+
+        ]
+
+        function visSide() {
+
+            console.log("Dom er loaded");
+
+            const container = document.querySelector(".data-container");
+            const sideTemplate = document.querySelector("template");
+
+
+            side.forEach(artikler => {
+
+
+                let klon = sideTemplate.cloneNode(true).content;
+                klon.querySelector("img").src = artikler.billede;
+                klon.querySelector("h1").textContent = artikler.overskrift;
+
+                klon.querySelector("p").textContent = artikler.dato;
+                klon.querySelector("p+p").textContent = artikler.broedtekst;
+                container.appendChild(klon);
+
+            })
+        }
+    </script>
+</body></html>

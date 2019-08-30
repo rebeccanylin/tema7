@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+
+    <style>
+        .dyrene {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(1fr);
+            max-width: 950px;
+            margin: 0 auto;
+
+        }
+
+        img {
+            width: 17%;
+        }
+
+        article {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        @media screen and (min-width:600px) {
+            .dyrene {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+        }
+
+        @media screen and (min-width:1000px) {
+            .dyrene {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <template>
+        <article>
+            <h2></h2>
+            <img src="" alt="">
+            <p class="type">Type: </p>
+            <p class="levested">Levested: </p>
+        </article>
+    </template>
+
+
+    <section class="dyrene"></section>
+
+
+    <script>
+        let dyr;
+        document.addEventListener("DOMContentLoaded", getJson);
+
+
+        async function getJson() {
+            let jsonData = await fetch("dyr.json");
+            console.log("dyr", jsonData);
+
+            dyr = await jsonData.json();
+            console.log("dyr", dyr);
+            visDyr();
+        }
+
+
+
+
+
+        function visDyr() {
+
+            const dyreneKloner = document.querySelector(".dyrene");
+            const temp = document.querySelector("template");
+
+
+
+            dyr.forEach(dyre => {
+                const klon = temp.cloneNode(true).content;
+                klon.querySelector("h2").textContent = dyre.fornavn;
+                klon.querySelector(".type").textContent += dyre.type;
+                klon.querySelector(".levested").textContent += dyre.levested;
+                klon.querySelector("img").src = dyre.billede;
+                dyreneKloner.appendChild(klon);
+
+
+                //            document.querySelector("article").innerHTML += `<p>${dyre.fornavn} ${dyre.type} ${dyre.levested}</p>`;
+
+
+
+            })
+        }
+    </script>
+</body></html>
