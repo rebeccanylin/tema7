@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+
+    <style>
+        .personlisten {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(1fr);
+            max-width: 950px;
+            margin: 0 auto;
+            background-color: rgba(135, 206, 250, 0.28);
+
+        }
+
+        .github {
+            text-decoration: underline;
+            color: plum;
+            left: 5px;
+
+        }
+
+        h2 {
+            color: plum;
+            left: 5px;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        article {
+            border: 1px solid blue;
+            padding: 5px;
+            color: plum;
+            background-color: skyblue;
+        }
+
+        @media screen and (min-width:200px) {
+            .personlisten {
+                grid-template-columns: repeat(1fr);
+            }
+
+        }
+
+        @media screen and (min-width:600px) {
+            .personlisten {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media screen and (min-width:1000px) {
+            .personlisten {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <template>
+        <article>
+            <h2></h2>
+            <img src="" alt="">
+            <a class="github" target="_blank" href="">Github: </a>
+        </article>
+    </template>
+
+    <section class="personlisten"></section>
+
+    <script>
+        let personlisten;
+
+        document.addEventListener("DOMContentLoaded", getJson);
+
+
+        async function getJson() {
+            let jsonData = await fetch("https://spreadsheets.google.com/feeds/list/1Xge7slZ9dEOTCn1Yxl3OE4xgvrXOL8Y_iu3WN1yGB1U/od6/public/values?alt=json");
+            console.log("personlisten", jsonData);
+
+            personlisten = await jsonData.json();
+            console.log("personlisten", personlisten);
+            visPersonlisten();
+        }
+
+
+        function visPersonlisten() {
+
+            const personlistenKloner = document.querySelector(".personlisten");
+            const temp = document.querySelector("template");
+
+
+
+            personlisten.feed.entry.forEach((person) => {
+                const klon = temp.cloneNode(true).content;
+                klon.querySelector("h2").textContent = person.gsx$navn.$t;
+                klon.querySelector(".github").textContent += person.gsx$github.$t;
+                klon.querySelector(".github").href = `https://www.github.com/${person.gsx$github.$t}`;
+                klon.querySelector("img").src = person.gsx$billede.$t;
+                personlistenKloner.appendChild(klon);
+
+            })
+        }
+    </script>
+</body></html>
