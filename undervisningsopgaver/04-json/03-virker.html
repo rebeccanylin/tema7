@@ -71,6 +71,7 @@
         .valgt {
             background-color: cadetblue;
         }
+
     </style>
 </head>
 
@@ -86,12 +87,12 @@
     </template>
 
     <nav>
-
-        <button class="filter valgt" data-køn="alle">Alle</button>
-        <button class="filter" data-køn="m">Mænd</button>
-        <button class="filter" data-køn="k">Kvinder</button>
-        <button class="filter" data-køn="andet">Andet</button>
-
+        <a>
+            <button class="filter valgt" data-køn="alle">Alle</button>
+            <button class="filter" data-køn="m">Mænd</button>
+            <button class="filter" data-køn="k">Kvinder</button>
+            <button class="filter" data-køn="andet">Andet</button>
+        </a>
     </nav>
 
     <section class="personlisten"></section>
@@ -136,12 +137,23 @@
         function addEventlistnerToButtons() {
             document.querySelectorAll(".filter").forEach(elm => {
                 elm.addEventListener("click", filtrering);
+
             })
         }
 
         function filtrering() {
             filter = this.dataset.køn;
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.classList.remove("valgt");
+
+            })
+
+            this.classList.add("valgt");
+            console.log(this);
             visPersonlisten();
         }
+
     </script>
-</body></html>
+</body>
+
+</html>
