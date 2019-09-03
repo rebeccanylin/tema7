@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+
+    <style>
+        #single {
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: pink;
+
+            overflow: scroll;
+        }
+
+        .indhold {
+            width: 50vw;
+            min-height: 50vh;
+            background: #fff;
+            margin: 4rem auto;
+            padding: 10px;
+
+        }
+
+        .tilbage {
+            position: fixed;
+            left: 0;
+            font-size: 1rem;
+
+        }
+
+        .billede {
+            width: 50%;
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="single">
+        <button class="tilbage">Tilbage</button>
+        <section class="indhold">
+            <article class="enkeltPerson">
+                <h2></h2>
+                <img class="billede" src="" alt="">
+                <p>Github: <a class="github" href=""></a></p>
+                <p class="historie"></p>
+            </article>
+        </section>
+
+    </div>
+
+    <script>
+        let urlParams = new URLSearchParams(window.location.search);
+        let github = urlParams.get("github");
+        let personer;
+        document.addEventListener("DOMContentLoaded", getJson);
+
+
+        async function getJson() {
+            let jsonData = await fetch("https://spreadsheets.google.com/feeds/list/1Xge7slZ9dEOTCn1Yxl3OE4xgvrXOL8Y_iu3WN1yGB1U/od6/public/values?alt=json");
+            console.log("personer", jsonData);
+
+            personer = await jsonData.json();
+
+            visPerson();
+
+        }
+
+
+        function visPerson() {
+            personer.feed.entry.forEach(person => {
+                if (person.gsx$github.$t == github) {
+                    console.log(person);
+                    document.querySelector("h2").textContent = person.gsx$navn.$t;
+                    document.querySelector(".github").textContent += person.gsx$github.$t;
+                    document.querySelector(".github").href = `https://www.github.com/${person.gsx$github.$t}`;
+                    document.querySelector(".billede").src = person.gsx$billede.$t;
+
+
+                }
+            })
+        }
+        document.querySelector(".tilbage").addEventListener("click", () => {
+            history.back();
+        })
+
+    </script>
+</body>
+
+</html>

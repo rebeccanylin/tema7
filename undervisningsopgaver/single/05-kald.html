@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+
+    <style>
+        .personlisten {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(1fr);
+            max-width: 950px;
+            margin: 0 auto;
+
+
+        }
+
+        .github {
+            text-decoration: underline;
+            color: plum;
+            left: 5px;
+
+        }
+
+        h2 {
+            color: plum;
+            left: 5px;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        article {
+            border: 1px solid;
+            padding: 5px;
+            color: plum;
+            background-color: ghostwhite;
+            font-family: sans-serif;
+        }
+
+        @media screen and (min-width:200px) {
+            .personlisten {
+                grid-template-columns: repeat(1fr);
+            }
+
+        }
+
+        @media screen and (min-width:600px) {
+            .personlisten {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media screen and (min-width:1000px) {
+            .personlisten {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+
+
+        nav {
+            text-align: center;
+
+        }
+
+        .valgt {
+            background-color: cadetblue;
+        }
+
+        h1 {
+            font-family: sans-serif;
+            font-size: 20px;
+
+        }
+
+        h3 {
+            font-family: sans-serif;
+            color: cadetblue;
+            text-align: center;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <template>
+        <article>
+            <h2></h2>
+            <img src="" alt="">
+            <a class="github" target="_blank" href="">Github: </a>
+        </article>
+    </template>
+    <h3>Personliste</h3>
+
+    <nav class="menu">
+
+        <button class="filter valgt" data-køn="alle" data-hold="alle">Alle</button>
+        <button class="filter" data-køn="m" data-hold="alle">Mænd</button>
+        <button class="filter" data-køn="k" data-hold="alle">Kvinder</button>
+        <button class="filter" data-køn="andet" data-hold="alle">Andet</button>
+        <button class="filter" data-køn="m" data-hold="a">Mænd på hold A</button>
+
+
+
+
+        <h1>Alle</h1>
+
+    </nav>
+
+    <section class="personlisten"></section>
+
+
+
+    <script>
+        let personlisten;
+
+        const personlistenKloner = document.querySelector(".personlisten");
+        const temp = document.querySelector("template");
+        let filterKøn = "alle";
+        let filterHold = "alle";
+
+        document.addEventListener("DOMContentLoaded", getJson);
+
+
+        async function getJson() {
+            let jsonData = await fetch("https://spreadsheets.google.com/feeds/list/1Xge7slZ9dEOTCn1Yxl3OE4xgvrXOL8Y_iu3WN1yGB1U/od6/public/values?alt=json");
+            console.log("personlisten", jsonData);
+            personlisten = await jsonData.json();
+            console.log("personlisten", personlisten);
+            visPersonlisten();
+            addEventlistnerToButtons();
+        }
+
+
+        function visPersonlisten() {
+            personlistenKloner.innerHTML = "";
+            personlisten.feed.entry.forEach(person => {
+                if ((filterKøn == "alle" || filterKøn == person.gsx$køn.$t) && (filterHold == "alle" || filterHold == person.gsx$hold.$t)) {
+
+                    const klon = temp.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = person.gsx$navn.$t;
+                    klon.querySelector(".github").textContent += person.gsx$github.$t;
+                    klon.querySelector(".github").href = `https://www.github.com/${person.gsx$github.$t}`;
+                    klon.querySelector("img").src = person.gsx$billede.$t;
+
+                    personlistenKloner.appendChild(klon);
+                    personlistenKloner.lastElementChild.addEventListener("click", () => {
+                        location.href = `06-single.html?github=${person.gsx$github.$t}`;
+
+                    })
+                }
+
+            })
+        }
+
+        function visSingle(person) {
+
+            //            document.querySelector("#popUp").style.display = "block";
+            // document.querySelector("#popUp .luk").addEventListener = ("click", lukSingle);
+
+            document.querySelector("h2").textContent = person.gsx$navn.$t;
+            document.querySelector(".billede").src = person.gsx$billede.$t;
+            document.querySelector(".billede").alt = person.gsx$navn.$t;
+            document.querySelector(".github").href = `https://www.github.com/${person.gsx$github.$t}`;
+            document.querySelector(".github").textContent = `https://www.github.com/${person.gsx$github.$t}`;
+            document.querySelector(".historie").textContent = person.gsx$historie.$t;
+
+        }
+
+        function lukSingle() {
+            document.querySelector("#popUp").style.display = "none";
+        }
+
+        function addEventlistnerToButtons() {
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+
+            })
+        }
+
+        function filtrering() {
+            filterKøn = this.dataset.køn;
+            filterHold = this.dataset.hold;
+
+            document.querySelector("h1").textContent = this.textContent;
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.classList.remove("valgt");
+
+            });
+
+            this.classList.add("valgt");
+            console.log(this);
+            visPersonlisten();
+        }
+    </script>
+</body></html>
