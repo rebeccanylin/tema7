@@ -133,7 +133,8 @@
                 <h2></h2>
                 <img class="billede" src="" alt="">
                 <p class="lang"></p>
-                <p> Github: <a class="github" href=""></a></p>
+                <p class="oprindelse">Oprindelse</p>
+                <p class="pris">Pris: </p>
             </article>
         </section>
     </div>
@@ -180,8 +181,8 @@
 
                     let klon = menuTemplate.cloneNode(true).content;
                     klon.querySelector("h2").textContent = ret.gsx$navn.$t;
-                    klon.querySelector(".billede").src = ret.gsx$billede.$t;
-                    klon.querySelector(".pris").textContent = ret.gsx$pris.$t;
+                    klon.querySelector(".billede").src = "imgs/small/" + ret.gsx$billede.$t + "-sm.jpg";
+                    klon.querySelector(".pris").textContent = +ret.gsx$pris.$t;
                     klon.querySelector(".kort").textContent = ret.gsx$kort.$t;
                     klon.querySelector(".oprindelse").textContent = ret.gsx$oprindelse.$t;
                     container.appendChild(klon);
@@ -203,9 +204,9 @@
             document.querySelector("#popup").style.display = "block";
             document.querySelector("#popup .luk").addEventListener("click", lukSingleRet);
             document.querySelector(".enkelteRetter h2").textContent = ret.gsx$navn.$t;
-            document.querySelector(".enkelteRetter .billede").src = ret.gsx$billede.$t;
+            document.querySelector(".enkelteRetter .billede").src = "imgs/medium/" + ret.gsx$billede.$t + "-md.jpg";
             document.querySelector(".enkelteRetter .billede").alt = ret.gsx$billede.$t;
-            document.querySelector(".enkelteRetter .pris").textContent = ret.gsx$pris.$t;
+            document.querySelector(".enkelteRetter .pris").textContent += ret.gsx$pris.$t;
             document.querySelector(".enkelteRetter .lang").textContent = ret.gsx$lang.$t;
             document.querySelector(".enkelteRetter .oprindelse").textContent = ret.gsx$oprindelse.$t;
         };
@@ -227,4 +228,3 @@
         }
     </script>
 </body></html>
-
