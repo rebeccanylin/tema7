@@ -4,29 +4,30 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Persongalleri</title>
+    <title>Babushka</title>
     <link rel="stylesheet" href="">
 
     <style>
+        * {
+            font-family: sans-serif;
+        }
+
         h1 {
-            color: ghostwhite;
+            color: black;
             font-size: 3rem;
             margin: 0 auto;
             text-align: center;
             padding: 20px;
-            border: 4px solid black;
-            width: 300px;
-            height: 50px;
             margin-bottom: 20px;
         }
 
         h2 {
-            color: ghostwhite;
+            color: black;
             text-align: center;
         }
 
         html {
-            background-color: rgba(137, 137, 137, 0.74);
+            background-color: beige;
         }
 
         a {
@@ -40,25 +41,26 @@
             width: 100%;
         }
 
-        .data-container {
+        #menu-container {
             display: grid;
             grid-gap: 10px;
-            /*grid-template-columns: repeat(3, 1fr);*/
+            /*            grid-template-columns: repeat(3, 1fr);*/
         }
 
         article {
-            border: 8px solid white;
+            /*            border: 8px solid white;*/
             color: aliceblue;
-            padding: 10px;
+            padding: 1px;
             text-align: center;
+
         }
 
         article:nth-child(even) {
-            background: #74ddac;
+            background-color: #de950f;
         }
 
         article:nth-child(odd) {
-            background: rgb(252, 149, 177);
+            background-color: #056c05;
         }
 
         nav {
@@ -67,7 +69,7 @@
         }
 
         .valgt {
-            background-color: red;
+            background-color: cadetblue;
         }
 
         #popup {
@@ -77,10 +79,11 @@
             height: 100vh;
             background: rgba(0, 0, 0, .7);
             display: none;
+            overflow: scroll;
         }
 
         .indhold {
-            width: 70vw;
+            width: 50vw;
             min-height: 50vh;
             background: #fff;
             margin: 4rem auto;
@@ -90,17 +93,17 @@
         .luk {
             position: fixed;
             right: 0;
-            font-size: 2rem;
+            font-size: 1.3rem;
         }
 
         @media screen and (min-width:600px) {
-            .data-container {
+            #menu-container {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media screen and (min-width:1000px) {
-            .data-container {
+            #menu-container {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
@@ -132,9 +135,8 @@
             <article class="enkelteRetter">
                 <h2></h2>
                 <img class="billede" src="" alt="">
-                <p class="lang"></p>
-                <p class="oprindelse">Oprindelse</p>
                 <p class="pris">Pris: </p>
+                <p class="lang"></p>
             </article>
         </section>
     </div>
@@ -182,9 +184,9 @@
                     let klon = menuTemplate.cloneNode(true).content;
                     klon.querySelector("h2").textContent = ret.gsx$navn.$t;
                     klon.querySelector(".billede").src = "imgs/small/" + ret.gsx$billede.$t + "-sm.jpg";
-                    klon.querySelector(".pris").textContent = +ret.gsx$pris.$t;
+                    klon.querySelector(".pris").textContent += ret.gsx$pris.$t;
                     klon.querySelector(".kort").textContent = ret.gsx$kort.$t;
-                    klon.querySelector(".oprindelse").textContent = ret.gsx$oprindelse.$t;
+                    klon.querySelector(".oprindelse").textContent += ret.gsx$oprindelse.$t;
                     container.appendChild(klon);
                     console.log(klon)
                     container.lastElementChild.addEventListener("click", () => {
@@ -204,11 +206,11 @@
             document.querySelector("#popup").style.display = "block";
             document.querySelector("#popup .luk").addEventListener("click", lukSingleRet);
             document.querySelector(".enkelteRetter h2").textContent = ret.gsx$navn.$t;
-            document.querySelector(".enkelteRetter .billede").src = "imgs/medium/" + ret.gsx$billede.$t + "-md.jpg";
+            document.querySelector(".enkelteRetter .billede").src = "imgs/large/" + ret.gsx$billede.$t + ".jpg";
             document.querySelector(".enkelteRetter .billede").alt = ret.gsx$billede.$t;
             document.querySelector(".enkelteRetter .pris").textContent += ret.gsx$pris.$t;
             document.querySelector(".enkelteRetter .lang").textContent = ret.gsx$lang.$t;
-            document.querySelector(".enkelteRetter .oprindelse").textContent = ret.gsx$oprindelse.$t;
+
         };
 
 
