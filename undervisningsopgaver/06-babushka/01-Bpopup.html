@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persongalleri</title>
+    <link rel="stylesheet" href="">
+
+    <style>
+        h1 {
+            color: ghostwhite;
+            font-size: 3rem;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+            border: 4px solid black;
+            width: 300px;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: ghostwhite;
+            text-align: center;
+        }
+
+        html {
+            background-color: rgba(137, 137, 137, 0.74);
+        }
+
+        a {
+            color: blue;
+            font-size: 1.3rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .data-container {
+            display: grid;
+            grid-gap: 10px;
+            /*grid-template-columns: repeat(3, 1fr);*/
+        }
+
+        article {
+            border: 8px solid white;
+            color: aliceblue;
+            padding: 10px;
+            text-align: center;
+        }
+
+        article:nth-child(even) {
+            background: #74ddac;
+        }
+
+        article:nth-child(odd) {
+            background: rgb(252, 149, 177);
+        }
+
+        nav {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .valgt {
+            background-color: red;
+        }
+
+        #popup {
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, .7);
+            display: none;
+        }
+
+        .indhold {
+            width: 70vw;
+            min-height: 50vh;
+            background: #fff;
+            margin: 4rem auto;
+            padding: 10px;
+        }
+
+        .luk {
+            position: fixed;
+            right: 0;
+            font-size: 2rem;
+        }
+
+        @media screen and (min-width:600px) {
+            .data-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (min-width:1000px) {
+            .data-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Bistro Babushka</h1>
+    <h2></h2>
+    <nav>
+        <button class="filter valgt" data-kategori="alle">Alle</button>
+        <button class="filter" data-kategori="forretter">Forretter</button>
+        <button class="filter" data-kategori="hovedretter">Hovedretter</button>
+        <button class="filter" data-kategori="desserter">Desserter</button>
+
+    </nav>
+
+    <section id="menu-container"></section>
+    <section class="retter"></section>
+
+    <article id="ret" data-ret data-id=""></article>
+
+
+
+    <div id="popup">
+        <button class="luk">X</button>
+        <section class="indhold">
+            <article class="enkelteRetter">
+                <h2></h2>
+                <img class="billede" src="" alt="">
+                <p class="lang"></p>
+                <p> Github: <a class="github" href=""></a></p>
+            </article>
+        </section>
+    </div>
+
+
+    <template>
+
+        <article>
+            <h2 class="navn"></h2>
+            <img class="billede" src="" alt="">
+            <p class="pris">Pris: </p>
+            <p class="kort"></p>
+            <p class="oprindelse">Oprindelse: </p>
+
+        </article>
+    </template>
+
+
+    <script>
+        let retter = [];
+        let filter = "alle";
+        const container = document.querySelector("#menu-container");
+        const menuTemplate = document.querySelector("template");
+        document.addEventListener("DOMContentLoaded", getJson);
+        async function getJson() {
+            let jsonData = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
+            console.log(jsonData)
+            retter = await jsonData.json();
+            console.log(retter)
+            visRetter();
+            addEventListenersToButtons();
+        }
+
+        function visRetter() {
+            container.innerHTML = "";
+            retter.feed.entry.forEach(ret => {
+                if (filter == "alle" || filter == ret.gsx$kategori.$t) {
+                    ret.gsx$navn.$t;
+                    ret.gsx$pris.$t;
+                    ret.gsx$kort.$t;
+                    ret.gsx$oprindelse.$t;
+                    console.log(ret)
+
+
+                    let klon = menuTemplate.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = ret.gsx$navn.$t;
+                    klon.querySelector(".billede").src = ret.gsx$billede.$t;
+                    klon.querySelector(".pris").textContent = ret.gsx$pris.$t;
+                    klon.querySelector(".kort").textContent = ret.gsx$kort.$t;
+                    klon.querySelector(".oprindelse").textContent = ret.gsx$oprindelse.$t;
+                    container.appendChild(klon);
+                    console.log(klon)
+                    container.lastElementChild.addEventListener("click", () => {
+                        visSingleRet(ret)
+                    });
+                }
+            })
+        }
+
+        function addEventListenersToButtons() {
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+        }
+
+        function visSingleRet(ret) {
+            document.querySelector("#popup").style.display = "block";
+            document.querySelector("#popup .luk").addEventListener("click", lukSingleRet);
+            document.querySelector(".enkelteRetter h2").textContent = ret.gsx$navn.$t;
+            document.querySelector(".enkelteRetter .billede").src = ret.gsx$billede.$t;
+            document.querySelector(".enkelteRetter .billede").alt = ret.gsx$billede.$t;
+            document.querySelector(".enkelteRetter .pris").textContent = ret.gsx$pris.$t;
+            document.querySelector(".enkelteRetter .lang").textContent = ret.gsx$lang.$t;
+            document.querySelector(".enkelteRetter .oprindelse").textContent = ret.gsx$oprindelse.$t;
+        };
+
+
+
+        function lukSingleRet() {
+            document.querySelector("#popup").style.display = "none";
+        }
+
+        function filtrering() {
+            document.querySelectorAll("button").forEach(elm => {
+                elm.classList.remove("valgt");
+            })
+            this.classList.add("valgt");
+            filter = this.dataset.kategori;
+            document.querySelector("h2").textContent = this.textContent;
+            visRetter();
+        }
+    </script>
+</body></html>
+
