@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babushka</title>
+    <link rel="stylesheet" href="">
+
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+
+        h1 {
+            color: black;
+            font-size: 3rem;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: black;
+            text-align: center;
+        }
+
+        html {
+            background-color: beige;
+        }
+
+        a {
+            color: blue;
+            font-size: 1.3rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        img {
+            width: 100%;
+        }
+
+
+        article {
+            color: aliceblue;
+            padding: 1px;
+            text-align: center;
+            overflow: scroll;
+
+        }
+
+
+        article:nth-child(even) {
+            background-color: #de950f;
+        }
+
+        article:nth-child(odd) {
+            background-color: #056c05;
+        }
+
+        .tilbage {
+            position: absolute;
+            right: 0;
+            top: 5vh;
+            font-size: 1.3rem;
+            background-color: rgba(245, 245, 220, 0);
+            color: beige;
+            border: none;
+        }
+
+        @media screen and (min-width:600px) {
+            #menu-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (min-width:1000px) {
+            #menu-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        #single {
+            position: fixed;
+            top: 0;
+            width: 50%;
+            margin-left: 25%;
+            margin-right: 46vw;
+            overflow: scroll;
+
+        }
+    </style>
+
+</head>
+
+<body background="imgs/russik_bygning.jpg">
+
+
+    <main id="single">
+        <section class="retter">
+            <button class="tilbage">Tilbage</button>
+            <article id="ret" data-ret data-id=""></article>
+            <article>
+                <h2 class="navn"></h2>
+                <img class="billede" src="" alt="">
+                <p class="pris">Pris: </p>
+                <p class="kort"></p>
+                <p class="oprindelse">Oprindelse: </p>
+                <p class="lang"></p>
+            </article>
+        </section>
+    </main>
+
+
+
+    <script>
+        let urlParams = new URLSearchParams(window.location.search);
+        let id = urlParams.get("id");
+        let retter;
+        document.addEventListener("DOMContentLoaded", getJson);
+
+
+        async function getJson() {
+            let jsonData = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
+            console.log("retter", jsonData);
+
+            retter = await jsonData.json();
+
+            visRet();
+
+        }
+
+
+        function visRet() {
+            retter.feed.entry.forEach((ret) => {
+                if (ret.gsx$id.$t == id) {
+                    console.log(ret);
+                    document.querySelector(".retter h2").textContent = ret.gsx$navn.$t;
+                    document.querySelector(".retter .billede").src = `imgs/large/${ret.gsx$billede.$t}.jpg`;
+                    document.querySelector(".retter .billede").alt = ret.gsx$billede.$t;
+                    document.querySelector(".retter .pris").textContent += ret.gsx$pris.$t;
+                    document.querySelector(".retter .lang").textContent = ret.gsx$lang.$t;
+
+
+                };
+            })
+        }
+
+        document.querySelector(".tilbage").addEventListener("click", () => {
+            history.back();
+        })
+    </script>
+</body></html>
